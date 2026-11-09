@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>King Champion</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#101020,#303060);
+  color: white;
+  text-align: center;
+}
+.container {
+  padding: 25px;
+  max-width: 500px;
+  margin: auto;
+}
+h1 { color: gold; }
+button {
+  padding: 18px 35px;
+  font-size: 22px;
+  background: gold;
+  border: none;
+  border-radius: 12px;
+  margin: 10px;
+}
+.score {
+  font-size: 55px;
+  color: #00ff99;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>👑 KING CHAMPION 👑</h1>
+<h2>30 Second Tap Challenge</h2>
+<div class="score" id="score">0</div>
+<h3 id="time">Time: 30</h3>
+<button id="start">START GAME</button>
+<button id="tap" disabled>TAP!</button>
+<h2>🏆 High Score</h2>
+<div id="best">0</div>
+<h3>Player: King Champion</h3>
+</div>
+<script>
+let score = 0;
+let time = 30;
+let playing = false;
+let timer;
+let best = Number(localStorage.getItem("kingBest") || 0);
+
+document.getElementById("best").textContent = best;
+
+document.getElementById("start").onclick = function() {
+  if (playing) return;
+  score = 0;
+  time = 30;
+  playing = true;
+  document.getElementById("score").textContent = score;
+  document.getElementById("time").textContent = "Time: " + time;
+  document.getElementById("tap").disabled = false;
+  this.disabled = true;
+
+  timer = setInterval(function() {
+    time--;
+    document.getElementById("time").textContent = "Time: " + time;
+    if (time <= 0) {
+      clearInterval(timer);
+      playing = false;
+      document.getElementById("tap").disabled = true;
+      document.getElementById("start").disabled = false;
+      if (score > best) {
+        best = score;
+        localStorage.setItem("kingBest", best);
+        document.getElementById("best").textContent = best;
+      }
+      alert("Game Over! Your Score: " + score);
+    }
+  }, 1000);
+};
+
+document.getElementById("tap").onclick = function() {
+  if (!playing) return;
+  score++;
+  document.getElementById("score").textContent = score;
+};
+</script>
+</body>
+                  </html>
